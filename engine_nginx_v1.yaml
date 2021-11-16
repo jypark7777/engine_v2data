@@ -1,0 +1,34 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: kube-engine-nginx-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-engine-nginx-v1
+  template:
+    metadata:
+      labels:
+        app: kube-engine-nginx-v1
+    spec:
+      containers:
+      - name: kube-engine-nginx-v1
+        image: demoazurereg.azurecr.io/engine_v1:latest
+        ports:
+        - containerPort: 80
+
+---
+
+# Backend Service
+kind: Service
+apiVersion: v1
+metadata:
+  name: kube-engine-nginx-v1
+spec:
+  selector:
+    app: kube-engine-nginx-v1
+  ports:
+  - port: 80
+  type: LoadBalancer
+

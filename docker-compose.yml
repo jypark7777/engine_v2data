@@ -1,0 +1,25 @@
+version: '3'
+services:
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: gunicorn featuringeg_rdb_models.wsgi:application -b 0.0.0.0:8000 
+        environment:
+            - DEBUG_MODE=False
+        container_name: featuringeg_rdb_models
+        volumes:
+            - .:/web
+        ports:
+            - "8000:8000"
+        expose:
+            - "8000"
+    nginx:
+        image: nginx:latest # nginx 서비스에서 사용할 도커 이미지
+        ports:
+            - "80:80"
+        volumes:
+            - .:/web
+            - ./nginx:/etc/nginx/conf.d
+        depends_on: # 서비스 간의 종속성 표현
+            - web

@@ -1,0 +1,43 @@
+appdirs==1.4.4
+asgiref==3.3.4
+beautifulsoup4==4.9.3
+bs4==0.0.1
+certifi==2020.12.5
+chardet==4.0.0
+coreapi==2.3.3
+coreschema==0.0.4
+distlib==0.3.1
+Django==3.2
+django-elasticsearch-dsl @ git+https://github.com/alexgmin/django-elasticsearch-dsl.git@adb34cbe3e7aaf7373ededf2d15fa47167bab5d5
+djangorestframework==3.12.4
+drf-generators==0.5.0
+drf-yasg==1.20.0
+elasticsearch==7.13.0
+elasticsearch-dsl==7.3.0
+# featuring-framework @ git+https://github.com/featuring-corp/featuring_framework.git@ec9a01bb8c630f3a4382e34295afc2adadc4eb35
+# featuringeg-base @ git+https://github.com/featuring-corp/featuringeg_base.git@bddd1676cc1e981c6100f650147bee556523c8de
+filelock==3.0.12
+gunicorn==20.1.0
+idna==2.10
+inflection==0.5.1
+itypes==1.2.0
+Jinja2==3.0.1
+MarkupSafe==2.0.1
+mysqlclient==2.0.3
+nose==1.3.7
+packaging==20.9
+pika==1.2.0
+psycopg2
+PyICU==2.7.2
+pyparsing==2.4.7
+python-dateutil==2.8.1
+pytz==2021.1
+requests==2.25.1
+ruamel.yaml==0.17.4
+ruamel.yaml.clib==0.2.2
+six==1.15.0
+soupsieve==2.2.1
+sqlparse==0.4.1
+uritemplate==3.0.1
+urllib3==1.26.4
+virtualenv==20.4.3

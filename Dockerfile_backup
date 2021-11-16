@@ -1,0 +1,76 @@
+FROM python:3.6.9
+
+RUN apt-get update -y
+RUN apt-get install -y python-pip python-dev build-essential
+RUN apt-get -y install tzdata g++ git curl
+RUN apt-get -y install default-jdk default-jre
+
+RUN pip install --upgrade pip
+
+COPY . /app
+WORKDIR /app
+
+RUN pip install django-admin-caching==0.1.8
+RUN pip install -r requirements.txt
+RUN pip install pytesseract==0.3.8
+
+RUN pip install konlpy
+RUN bash -c "$(curl -s https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh)"
+
+WORKDIR /app/mecab-0.996-ko-0.9.2
+RUN ./configure
+RUN make
+#RUN make check
+RUN make install
+
+WORKDIR /app/mecab-ko-dic-2.1.1-20180720
+RUN autoreconf
+RUN ./configure
+RUN make
+RUN make install
+RUN pip install mecab-python3
+
+#UWSGI
+RUN pip install uwsgi
+#RUN python3 manage.py collectstatic --noinput
+ENV DJANGO_SETTINGS_MODULE=poza_score.settings.poza
+
+RUN apt-get install -y nginx
+
+# 기존에 존재하던 Nginx설정 파일들 삭제
+RUN rm -rf /etc/nginx/sites-available/*
+RUN rm -rf /etc/nginx/sites-enabled/*
+
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY poza_score.conf /etc/nginx/sites-available/
+
+#RUN mkdir -p /etc/nginx/sites-enabled/
+RUN ln -s /etc/nginx/sites-available/poza_score.conf /etc/nginx/sites-enabled/
+
+#supervisor 추가
+RUN apt-get -y install supervisor
+COPY supervisor-app.conf /etc/supervisor/conf.d/
+
+WORKDIR /app
+
+EXPOSE 80
+#supervisor 사용
+CMD ["bash", "-c", "/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisor-app.conf"]
+
+#CMD ["python3", "manage.py", "collectstatic", "--noinput"]
+
+#EXPOSE 8000
+#CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+#CMD ["uwsgi", "--ini", "/app/uwsgi.ini"]
+#CMD ["uwsgi", "--ini", "/app/uwsgi.ini", "--http", ":8000"]
+
+#로컬 이미지 실행 시 필요
+#EXPOSE 8000
+#CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000", "--settings=poza_score.settings.poza"]
+
+#CMD ["uwsgi", "--ini", "/app/uwsgi.ini"]
+
+#EXPOSE 80
+#CMD ["service", "nginx", "start"]
+#CMD ["nginx", "-g", "daemon off;"]
+

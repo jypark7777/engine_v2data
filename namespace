@@ -1,0 +1,31 @@
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    ServerName data.featuringscore.ai
+    ServerAlias *.amazonaws.com
+
+    Alias /static /home/featuring/featuringeg_data/static
+    Alias /media /home/featuring/featuringeg_data/media
+
+    <Directory /home/featuring/featuringeg_data/static>
+        Require all granted
+    </Directory>
+
+    <Directory /home/featuring/featuringeg_data/templates>
+        Require all granted
+    </Directory>
+
+    <Directory /home/featuring/featuringeg_data/media>
+        Require all granted
+    </Directory>
+
+    <Directory /home/featuring/featuringeg_data/featuringeg_data>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
+
+    WSGIDaemonProcess featuringeg_data python-path=/home/featuring/featuringeg_data:/home/featuring/env_featuringeg_data/lib/python3.8/site-packages python-home=/home/featuring/env_featuringeg_data
+    WSGIScriptAlias / /home/featuring/featuringeg_data/featuringeg_data/wsgi.py
+    WSGIProcessGroup featuringeg_data
+    WSGIApplicationGroup %{GLOBAL}
+</VirtualHost>

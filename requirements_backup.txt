@@ -1,0 +1,9 @@
+django==3.2
+elasticsearch
+django_elasticsearch_dsl
+djangorestframework
+drf_generators
+drf-yasg
+psycopg2
+beautifulsoup4
+mysqlclient
